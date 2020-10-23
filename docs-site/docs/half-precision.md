@@ -65,7 +65,7 @@ out, loss = model(tx, ty)
 ### Example
 An example script is `train_cnn.py`, run below command to train in half.
 ```python
-python examples/cnn/train_cnn.py cnn mnist -pfloat16
+# python examples/cnn/train_cnn.py cnn mnist -pfloat16
 ```
 
 ## Implementation
@@ -83,6 +83,18 @@ Tensor Core released by Nvidia further accelerates half precision and multiples
 throughput for operations like GEMM(CuBlas) and convolution(CuDNN). To enable 
 Tensor core operation, there are a few restriction on GEMM dimensions, 
 convolution channel size, Cuda version, and GPU version(Turing or later) and etc.
+
+#### Example: ResNet18 could be accelerated by 17.7%
+```python
+# python examples/cnn/train_cnn.py resnet cifar10 -pfloat32 -m1
+Starting Epoch 0:
+training time 181.1734483242035
+Training loss = 1886.811401, training accuracy = 0.117598
+# python examples/cnn/train_cnn.py resnet cifar10 -pfloat16 -m1
+Starting Epoch 0:
+training time 149.40804076194763
+Training loss = 1839.386719, training accuracy = 0.098191
+```
 
 ### Implement Operations
 Half operations are primarily implemented in `tensor_math_cuda.h`, by specializing
